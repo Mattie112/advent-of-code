@@ -1,0 +1,11 @@
+version: "3.7"
+services:
+  php-cli:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    entrypoint: php -d xdebug.remote_autostart=1 -d xdebug.remote_enable=1 -d xdebug.remote_port=9000 "${XDEBUG_USER_CONFIG:--d xdebug.remote_connect_back=1}" # Windows: see README.md
+    environment:
+      PHP_IDE_CONFIG: "serverName=advent-of-code-2019"
+    volumes:
+      - .:/opt/project
