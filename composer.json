@@ -1,0 +1,19 @@
+{
+  "name": "mattie112/advent-of-code",
+  "description": "Advent of code",
+  "type": "project",
+  "require": {
+    "php": "^8.0",
+    "symfony/console": "^5.2"
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+      "mattie112\\AdventOfCode\\": [
+        "src/"
+      ]
+    }
+  }
+}
