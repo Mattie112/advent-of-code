@@ -37,7 +37,7 @@ abstract class Day extends Command
     {
         if ($test) {
             if (file_exists(__DIR__ . "/../inputs/" . $year . "/day" . $day . "/day" . $day . "-test.txt")) {
-                return trim(file_get_contents(__DIR__ . "/../inputs/" . $year . "/day" . $day . "/day" . $day . ".txt"));
+                return trim(file_get_contents(__DIR__ . "/../inputs/" . $year . "/day" . $day . "/day" . $day . "-test.txt"));
             }
             if (file_exists(__DIR__ . "/../inputs/" . $year . "/day" . $day . "/day" . $day . "-part" . $part . ".txt")) {
                 return trim(file_get_contents(__DIR__ . "/../inputs/" . $year . "/day" . $day . "/day" . $day . "-part" . $part . "-test.txt"));
