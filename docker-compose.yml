@@ -6,7 +6,6 @@ services:
       dockerfile: ./Dockerfile
     volumes:
       - ./:/opt/project
-    command: "${XDEBUG_USER_CONFIG:--d xdebug.discover_client_host=true}"
-    environment:
-      PHP_IDE_CONFIG: "serverName=AOC"
+    env_file:
+      - .env
     working_dir: /opt/project

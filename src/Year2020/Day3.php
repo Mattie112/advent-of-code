@@ -45,7 +45,7 @@ class Day3 extends Day
         $y = 0;
         $trees = 0;
         for ($i = 0; $i < $lines; $i++) {
-            if ($input[$y][$x % $cols] === self::TREE) {
+            if (isset($input[$y][$x % $cols]) && $input[$y][$x % $cols] === self::TREE) {
                 $trees++;
             }
             $x += $right;
