@@ -11,13 +11,13 @@ class Day3 extends Day
 
     public function part1(): int|string
     {
-        $input = $this->parseInput($this->getInput(2020, 3, 1, false));
+        $input = $this->parseInput($this->getInput(2020, 3, 1));
         return $this->slipperySlope($input, 3, 1);
     }
 
     public function part2(): int|string
     {
-        $input = $this->parseInput($this->getInput(2020, 3, 2, false));
+        $input = $this->parseInput($this->getInput(2020, 3, 2));
 
         $a[] = $this->slipperySlope($input, 1, 1);
         $a[] = $this->slipperySlope($input, 3, 1);

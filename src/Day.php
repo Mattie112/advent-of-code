@@ -10,14 +10,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class Day extends Command
 {
+    protected bool $test = false;
 
-    public $log;
     public function __construct()
     {
+        Command::__construct();
         // I am to lazy to set a name every day ;)
         preg_match("@Day(\d*)@", static::class, $matches);
         $this->setName("day" . $matches[1]);
-        Command::__construct();
+        $this->addOption("test", "t");
     }
 
     abstract public function part1(): int|string;
@@ -27,7 +28,9 @@ abstract class Day extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->log = $output;
+        if ($input->getOption("test")) {
+            $this->test = true;
+        }
         $part1 = $this->part1();
         $output->writeln(static::class . " Part1 answer: " . $part1);
         $part2 = $this->part2();
@@ -35,29 +38,34 @@ abstract class Day extends Command
         return 0;
     }
 
-    public function getUntrimmedInput(int $year, int $day, int $part, bool $test = false): string
+    public function getInput(int $year, int $day, int $part): string
     {
-        return trim($this->getInput($year, $day, $part, $test));
-    }
-
-    public function getInput(int $year, int $day, int $part, bool $test = false): string
-    {
-        if ($test) {
+        if ($this->isTest()) {
             if (file_exists(__DIR__ . "/../inputs/" . $year . "/day" . $day . "/day" . $day . "-test.txt")) {
-                return file_get_contents(__DIR__ . "/../inputs/" . $year . "/day" . $day . "/day" . $day . "-test.txt");
+                return trim(file_get_contents(__DIR__ . "/../inputs/" . $year . "/day" . $day . "/day" . $day . "-test.txt"));
             }
             if (file_exists(__DIR__ . "/../inputs/" . $year . "/day" . $day . "/day" . $day . "-part" . $part . "-test.txt")) {
-                return file_get_contents(__DIR__ . "/../inputs/" . $year . "/day" . $day . "/day" . $day . "-part" . $part . "-test.txt");
+                return trim(file_get_contents(__DIR__ . "/../inputs/" . $year . "/day" . $day . "/day" . $day . "-part" . $part . "-test.txt"));
             }
         }
 
         if (file_exists(__DIR__ . "/../inputs/" . $year . "/day" . $day . "/day" . $day . ".txt")) {
-            return file_get_contents(__DIR__ . "/../inputs/" . $year . "/day" . $day . "/day" . $day . ".txt");
+            return trim(file_get_contents(__DIR__ . "/../inputs/" . $year . "/day" . $day . "/day" . $day . ".txt"));
         }
+
         if (file_exists(__DIR__ . "/../inputs/" . $year . "/day" . $day . "/day" . $day . "-part" . $part . ".txt")) {
-            return file_get_contents(__DIR__ . "/../inputs/" . $year . "/day" . $day . "/day" . $day . "-part" . $part . ".txt");
+            return trim(file_get_contents(__DIR__ . "/../inputs/" . $year . "/day" . $day . "/day" . $day . "-part" . $part . ".txt"));
         }
         throw new RuntimeException("Could not find input");
     }
 
+    public function isTest(): bool
+    {
+        return $this->test;
+    }
+
+    public function setTest(bool $test): void
+    {
+        $this->test = $test;
+    }
 }
