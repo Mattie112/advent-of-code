@@ -11,6 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 abstract class Day extends Command
 {
     protected bool $test = false;
+    public OutputInterface|null $output = null;
 
     public function __construct()
     {
@@ -25,9 +26,16 @@ abstract class Day extends Command
 
     abstract public function part2(): int|string;
 
+    public function log(string $string): void
+    {
+        if ($this->output && $this->output->isVerbose()) {
+            $this->output->writeln($string);
+        }
+    }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $this->output = $output;
         if ($input->getOption("test")) {
             $this->test = true;
         }
