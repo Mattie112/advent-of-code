@@ -11,31 +11,21 @@ class Day6 extends Day
     public function part1(): int|string
     {
         $input = $this->getInput(2020, 6, 1);
-        $input = explode("\n\n", $input);
-
-        $total_answers = 0;
-        foreach ($input as $group) {
-            $persons = explode("\n", $group);
-            $answers = [];
-            foreach ($persons as $person) {
-                $person_answers = str_split($person);
-                foreach ($person_answers as $answer) {
-                    isset($answers[$answer]) ? $answers[$answer]++ : $answers[$answer] = 1;
-                }
-            }
-            $total_answers += count($answers);
-        }
-
-        return $total_answers;
+        return $this->sharedCode($input)[0];
     }
-
 
     public function part2(): int|string
     {
         $input = $this->getInput(2020, 6, 1);
-        $input = explode("\n\n", $input);
+        return $this->sharedCode($input)[1];
+    }
 
-        $total_answers = 0;
+    protected function sharedCode(string $input_str): array
+    {
+        $input = explode("\n\n", $input_str);
+
+        $part1 = 0;
+        $part2 = 0;
         foreach ($input as $group) {
             $persons = explode("\n", $group);
             $person_count = count($persons);
@@ -48,13 +38,13 @@ class Day6 extends Day
                 }
             }
 
-            // If we have more persons only take the answers with the amount equal to the amount of persons
-            $total_answers += count(array_filter($answers, static function ($elem) use ($person_count) {
+            $part1 += count($answers);
+            $part2 += count(array_filter($answers, static function ($elem) use ($person_count) {
                 return $elem === $person_count;
             }));
         }
 
-        return $total_answers;
+        return [$part1, $part2];
     }
 
     /**
