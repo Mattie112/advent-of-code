@@ -15,7 +15,7 @@ abstract class Day extends Command
 
     public function __construct()
     {
-        Command::__construct();
+        parent::__construct();
         // I am to lazy to set a name every day ;)
         preg_match("@Day(\d*)@", static::class, $matches);
         $this->setName("day" . $matches[1]);
@@ -44,6 +44,11 @@ abstract class Day extends Command
         $part2 = $this->part2();
         $output->writeln(static::class . " Part2 answer: " . $part2);
         return 0;
+    }
+
+    public function getInputAsArray(int $year, int $day, int $part, string $separator = PHP_EOL): array
+    {
+        return explode($separator, $this->getInput($year, $day, $part));
     }
 
     public function getInput(int $year, int $day, int $part): string
