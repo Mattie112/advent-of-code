@@ -8,19 +8,26 @@ use mattie112\AdventOfCode\Day;
 
 class Day9 extends Day
 {
+    protected int $preamble = 25;
+
+    public function setUp($input): array
+    {
+        $this->preamble = 25;
+        if ($this->isTest()) {
+            $this->preamble = 5;
+        }
+        $input = array_map('intval', $input);
+        return $input;
+    }
+
     public function part1(): int|string
     {
-        $preamble = 25;
-        if ($this->isTest()) {
-            $preamble = 5;
-        }
-        $input = $this->getInputAsArray(2020, 9, 1);
-        $input = array_map('intval', $input);
+        $input = $this->setUp($this->getInputAsArray(2020, 9, 1));
         $count = count($input);
 
         // Now go and check the rest
-        for ($i = $preamble; $i < $count; $i++) {
-            $array_slice = array_slice($input, $i - ($preamble), $preamble);
+        for ($i = $this->preamble; $i < $count; $i++) {
+            $array_slice = array_slice($input, $i - ($this->preamble), $this->preamble);
             $valid = $this->isValid($array_slice, $input[$i]);
             if (!$valid) {
                 return $input[$i];
@@ -44,53 +51,46 @@ class Day9 extends Day
 
     public function part2(): int|string
     {
-        $preamble = 25;
-        if ($this->isTest()) {
-            $preamble = 5;
-        }
-        $input = $this->getInputAsArray(2020, 9, 2);
-        $input = array_map('intval', $input);
+        $input = $this->setUp($this->getInputAsArray(2020, 9, 2));
         $count = count($input);
 
-        // Now go and check the rest
-        for ($i = $preamble; $i < $count; $i++) {
-            $array_slice = array_slice($input, $i - ($preamble), $preamble);
+        // This is the same code as part #1 however we don't return value here but we start looking with that value for a continuous  set
+        for ($i = $this->preamble; $i < $count; $i++) {
+            $array_slice = array_slice($input, $i - ($this->preamble), $this->preamble);
             $valid = $this->isValid($array_slice, $input[$i]);
             if (!$valid) {
-                return $this->findContiniousSet($input, $input[$i]);
+                return $this->findContinuousSet($input, $input[$i]);
             }
         }
 
         return 0;
     }
 
-    #[Pure] public function findContiniousSet($arr, $number)
+    #[Pure] public function findContinuousSet($arr, $wanted_number): int
     {
-        $count = count($arr);
-        for ($i = 0; $i < $count; $i++) {
-            if ($arr[$i] >= $number) {
+        foreach ($arr as $i => $value) {
+            if ($value >= $wanted_number) {
+                // We can ignore these anyway
                 continue;
             }
 
             // Now lets find some stuff
-            $counter = $arr[$i];
-            $min = $counter;
-            $max = $counter;
+            $counter = $min = $max = $value;
+            // We ignore all previous values
             $j = $i;
-            while ($counter < $number) {
+            // As soon as our counter exeeds the number that we want we can halt execution
+            while ($counter < $wanted_number) {
                 $j++;
-                $tmp = $arr[$j];
-                $counter += $tmp;
+                $counter += $arr[$j];
                 $min = min($min, $arr[$j]);
                 $max = max($max, $arr[$j]);
             }
 
-            if ($counter === $number) {
+            // If we do have the number that we want we can return the $min + $max
+            if ($counter === $wanted_number) {
                 return ($min + $max);
             }
         }
-        return "bleh";
+        return 0;
     }
-
-
 }

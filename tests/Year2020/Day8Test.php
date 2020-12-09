@@ -4,7 +4,6 @@ namespace mattie112\AdventOfCode\Year2020;
 
 use JetBrains\PhpStorm\ArrayShape;
 use mattie112\AdventOfCode\BaseTest;
-use PHPUnit\Framework\MockObject\MockObject;
 
 class Day8Test extends BaseTest
 {
