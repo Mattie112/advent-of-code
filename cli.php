@@ -17,6 +17,7 @@ $app->add(new Day5());
 $app->add(new Day6());
 $app->add(new Day7());
 $app->add(new Day8());
+$app->add(new Day9());
 try {
     $app->run();
 } catch (Exception $e) {
