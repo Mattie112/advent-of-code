@@ -28,7 +28,7 @@ abstract class Day extends Command
 
     public function log(string $string): void
     {
-        if ($this->output && $this->output->isVerbose()) {
+        if ($this->output?->isVerbose()) {
             $this->output->writeln($string);
         }
     }
