@@ -26,7 +26,7 @@ abstract class Day extends Command
 
     abstract public function part2(): int|string;
 
-    public function log(string $string): void
+    public function log(mixed $string): void
     {
         if ($this->output?->isVerbose()) {
             $this->output->writeln($string);
