@@ -118,6 +118,7 @@ class Day12 extends Day
             }
 
             if ($this->output?->isVerbose()) {
+                $this->log($line);
                 echo "Ship: ";
                 $this->debug($ship_position_x, $ship_position_y);
                 echo PHP_EOL;
