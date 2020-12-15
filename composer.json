@@ -17,5 +17,13 @@
         "src/"
       ]
     }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "mattie112\\AdventOfCode\\": [
+        "src/",
+        "tests/"
+      ]
+    }
   }
 }
