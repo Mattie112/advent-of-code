@@ -17,12 +17,12 @@ class Day18Test extends BaseTest
         return [
             "day 18 part 1 test" => [71, self::PART1, true],
             "day 18 part 1 prod" => [5374004645253, self::PART1, false],
-            "day 18 part 2 test" => [0, self::PART2, true],
-            "day 18 part 2 prod" => [0, self::PART2, false],
+            "day 18 part 2 test" => [231, self::PART2, true],
+            "day 18 part 2 prod" => [88782789402798, self::PART2, false],
         ];
     }
 
-    public function moreInputProvider(): array
+    public function part1Provider(): array
     {
         return [
             ["1 + (2 * 3) + (4 * (5 + 6))", 51],
@@ -33,8 +33,19 @@ class Day18Test extends BaseTest
         ];
     }
 
+    public function part2Provider(): array
+    {
+        return [
+            ["1 + (2 * 3) + (4 * (5 + 6))", 51],
+            ["2 * 3 + (4 * 5)", 46],
+            ["5 + (8 * 3 + 9 + 3 * 4 * 3)", 1445],
+            ["5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))", 669060],
+            ["((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2", 23340],
+        ];
+    }
+
     /**
-     * @dataProvider moreInputProvider
+     * @dataProvider part1Provider
      * @param string $test_input
      * @param int $expected
      */
