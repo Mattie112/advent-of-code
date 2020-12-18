@@ -17,8 +17,8 @@ class Day15Test extends BaseTest
         return [
             "day 15 part 1 test" => [436, self::PART1, true],
             "day 15 part 1 prod" => [517, self::PART1, false],
-            "day 15 part 2 test" => [0, self::PART2, true],
-            "day 15 part 2 prod" => [0, self::PART2, false],
+            "day 15 part 2 test" => [175594, self::PART2, true],
+            "day 15 part 2 prod" => [1047739, self::PART2, false],
         ];
     }
 
