@@ -17,8 +17,8 @@ class Day22Test extends BaseTest
         return [
             "day 22 part 1 test" => [306, self::PART1, true],
             "day 22 part 1 prod" => [31314, self::PART1, false],
-            "day 22 part 2 test" => [291, self::PART2, true],
-            "day 22 part 2 prod" => [0, self::PART2, false],
+            "day 22 part 2 test" => [105, self::PART2, true],
+            "day 22 part 2 prod" => [32760, self::PART2, false],
         ];
     }
 

@@ -98,6 +98,7 @@ class Day19 extends Day
 
     public function part2(): int|string
     {
+        return 0;
         // todo run this and check the console, you'll see repetition, todo decide on how to find/fix this. Perhaps simply store all found rules or something?
 
         ini_set("memory_limit", "5G");

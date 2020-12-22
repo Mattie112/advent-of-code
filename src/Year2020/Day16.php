@@ -70,6 +70,7 @@ class Day16 extends Day
 
     public function part2(): int|string
     {
+        return 0;
         ini_set("memory_limit", "-1");
         $input = $this->getInputAsArray(2020, 16, 2, PHP_EOL . PHP_EOL);
 
