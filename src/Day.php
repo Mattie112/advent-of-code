@@ -32,6 +32,12 @@ abstract class Day extends Command
             $this->output->writeln($string);
         }
     }
+    public function logNoLineBreak(mixed $string): void
+    {
+        if ($this->output?->isVerbose()) {
+            $this->output->write($string);
+        }
+    }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
