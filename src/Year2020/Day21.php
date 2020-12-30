@@ -8,67 +8,68 @@ use mattie112\AdventOfCode\Day;
 
 class Day21 extends Day
 {
-
     public function part1(): int|string
     {
         $input = $this->getInputAsArray(2020, 21, 1);
 
-        $ingredients_with_possible_allergens = [];
-        foreach ($input as $line) {
-            $ingredients_tmp = substr($line, 0, strpos($line, "("));
-            $allergens_tmp = substr($line, strpos($line, "contains ") + 9);
+        $recepies = [];
+        $possible_allergens_for_ingredient = [];
+        $recipies_with = [];
 
-            $tmp = [];
-            if (preg_match_all("/(?:([a-z]+) ?)/", $ingredients_tmp, $matches)) {
-                foreach ($matches[1] as $m) {
-                    if(!isset($ingredients_with_possible_allergens[$m])) {
-                        $ingredients_with_possible_allergens[$m] = [];
+        foreach ($input as $recipe_id => $line) {
+            [$ingredients, $allergens] = explode(" (contains ", $line);
+            $allergens = str_replace(")", "", $allergens);
+            $ingredients = explode(" ", $ingredients);
+            $allergens = explode(", ", $allergens);
+            $recepies[] = $ingredients;
+            foreach ($allergens as $aller) {
+                $recipies_with[$aller][] = $recipe_id;
+            }
+            foreach ($ingredients as $ingr) {
+                if (!isset($possible_allergens_for_ingredient[$ingr])) {
+                    $possible_allergens_for_ingredient[$ingr] = [];
+                }
+                $possible_allergens_for_ingredient[$ingr] = array_merge($possible_allergens_for_ingredient[$ingr], $allergens);
+            }
+        }
+
+        $safe = [];
+
+        foreach ($possible_allergens_for_ingredient as $ingredient => $possible_allergens) {
+            $impossible = [];
+            $c = $ingredient;
+            foreach ($possible_allergens as $possible_allergen) {
+                foreach ($recipies_with[$possible_allergen] as $i => $recipe_id) {
+                    if (!in_array($ingredient, $recepies[$recipe_id], true)) {
+                        // Found a recipe that contains the ingredient but not the allergen so it must be allergen-free
+                        $impossible[] = $possible_allergen;
+                        break;
                     }
-                    $tmp[$m] = [];
                 }
             }
-            if (preg_match_all("/(?:([a-z]+) ?)/", $allergens_tmp, $matches)) {
-                foreach ($tmp as $t => $_) {
-                    foreach ($matches[1] as $m) {
-                        $ingredients_with_possible_allergens[$t][] = $m;
-                    }
+            $a = array_diff($possible_allergens, $impossible);
+            if (empty($a)) {
+                $safe[] = $ingredient;
+            }
+        }
+
+        $safe_count = 0;
+        foreach ($safe as $ingredient) {
+            foreach ($recepies as $ingr_recep) {
+                if (in_array($ingredient, $ingr_recep, true)) {
+                    $safe_count++;
                 }
             }
         }
 
-
-        $andersom = [];
-        foreach ($input as $line) {
-            $ingredients_tmp = substr($line, 0, strpos($line, "("));
-            $allergens_tmp = substr($line, strpos($line, "contains ") + 9);
-
-            $tmp = [];
-            if (preg_match_all("/(?:([a-z]+) ?)/", $allergens_tmp, $matches)) {
-                foreach ($matches[1] as $m) {
-                    if(!isset($andersom[$m])) {
-                        $andersom[$m] = [];
-                    }
-                    $tmp[$m] = [];
-                }
-
-            }
-            if (preg_match_all("/(?:([a-z]+) ?)/", $ingredients_tmp, $matches)) {
-                foreach ($tmp as $t => $_) {
-                    foreach ($matches[1] as $m) {
-                        $andersom[$t][] = $m;
-                    }
-                }
-            }
-
-        }
-
-        return 0;
+        return $safe_count;
     }
 
     public function part2(): int|string
     {
-        return 0;
+        $input = $this->getInputAsArray(2020, 21, 2);
 
+        return 0;
     }
 
 }
