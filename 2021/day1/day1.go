@@ -3,7 +3,6 @@ package main
 import (
 	"AoC/utils"
 	"fmt"
-	"strconv"
 )
 
 func main() {
@@ -19,15 +18,10 @@ func main() {
 }
 
 func day1Part1(path string) int {
-	lines, err := utils.ReadLines(path)
-	if err != nil {
-		fmt.Println("No lines")
-	}
-
+	lines := utils.ReadLinesAsInteger(path)
 	increasedCount := 0
 	prevValue := -1
-	for _, s := range lines {
-		c, _ := strconv.Atoi(s)
+	for _, c := range lines {
 		if prevValue != -1 && c > prevValue {
 			increasedCount++
 		}
@@ -38,27 +32,19 @@ func day1Part1(path string) int {
 }
 
 func day1Part2(path string) int {
-	lines, err := utils.ReadLines(path)
-	if err != nil {
-		fmt.Println("No lines")
-	}
-
+	lines := utils.ReadLinesAsInteger(path)
 	increasedCount := 0
 	prevValue := -1
 	for i := 0; i < len(lines); i++ {
 		if i+1 >= len(lines) || i+2 >= len(lines) {
+			// Break if we are at the end of our list
 			break
 		}
-		first, _ := strconv.Atoi(lines[i])
-		second, _ := strconv.Atoi(lines[i+1])
-		third, _ := strconv.Atoi(lines[i+2])
-
-		count := first + second + third
-
+		// Sum the next 3 values
+		count := lines[i] + lines[i+1] + lines[i+2]
 		if prevValue != -1 && count > prevValue {
 			increasedCount++
 		}
-
 		prevValue = count
 	}
 
