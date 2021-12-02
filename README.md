@@ -1,4 +1,7 @@
 # advent-of-code
+
+2021 Is in Golang, please ignore all PHP related stuff, todo clean up this repo so it is more clear on what to use for what year!
+
 My repo for AoC, this one replaces the following:
 
 - https://github.com/Mattie112/advent-of-code-2017
