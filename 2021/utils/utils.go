@@ -12,7 +12,9 @@ func ReadLines(path string) []string {
 	if err != nil {
 		panic(fmt.Sprintf("Cannot read file: %s", path))
 	}
-	defer file.Close()
+	defer func(file *os.File) {
+		_ = file.Close()
+	}(file)
 
 	var lines []string
 	scanner := bufio.NewScanner(file)
@@ -36,4 +38,20 @@ func ReadLinesAsInteger(path string) []int {
 	}
 
 	return linesAsInt
+}
+
+func RemoveFromSlice(slice []string, s int) []string {
+	return append(slice[:s], slice[s+1:]...)
+}
+
+func StrArrToIntArr(strings []string) []int {
+	output := make([]int, 0)
+	for _, s := range strings {
+		if s == " " || s == "" {
+			continue
+		}
+		number, _ := strconv.Atoi(s)
+		output = append(output, number)
+	}
+	return output
 }
