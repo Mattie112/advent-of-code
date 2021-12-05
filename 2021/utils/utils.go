@@ -55,3 +55,11 @@ func StrArrToIntArr(strings []string) []int {
 	}
 	return output
 }
+
+func StringToInt(string string) int {
+	i, err := strconv.Atoi(string)
+	if err != nil {
+		panic(fmt.Sprintf("Cannot parse %s as integer", string))
+	}
+	return i
+}
