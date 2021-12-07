@@ -21,22 +21,12 @@ func main() {
 	log.Infoln(fmt.Sprintf("Part 2 Answer %d", count))
 }
 
-// Simply storing all the fish in a slice and doing a count after 80 days
 func part1(path string) int {
 	lines := utils.ReadLines(path)
-	maxPos := 0
-	crabs := make([]int, 0)
-	for _, line := range lines {
-		crabArr := utils.StrArrToIntArr(strings.Split(line, ","))
-		for _, crapPos := range crabArr {
-			crabs = append(crabs, crapPos)
-			if crapPos > maxPos {
-				maxPos = crapPos
-			}
-		}
-	}
+	crabs := utils.StrArrToIntArr(strings.Split(lines[0], ","))
+	maxPos := utils.GetMaxFromArr(crabs)
 
-	leastAmountOfFuel := 3.402823e+38
+	leastAmountOfFuel := math.MaxFloat64
 
 	for i := 0; i < maxPos; i++ {
 		tmpFuel := 0.0
@@ -51,30 +41,19 @@ func part1(path string) int {
 	return int(leastAmountOfFuel)
 }
 
-// Storing the fishAmount in a map by age(=timer) instead of storing all the fish
 func part2(path string) int {
 	lines := utils.ReadLines(path)
-	maxPos := 0
-	crabs := make([]int, 0)
-	for _, line := range lines {
-		crabArr := utils.StrArrToIntArr(strings.Split(line, ","))
-		for _, crapPos := range crabArr {
-			crabs = append(crabs, crapPos)
-			if crapPos > maxPos {
-				maxPos = crapPos
-			}
-		}
-	}
+	crabs := utils.StrArrToIntArr(strings.Split(lines[0], ","))
+	maxPos := utils.GetMaxFromArr(crabs)
 
-	leastAmountOfFuel := 3.402823e+38
+	leastAmountOfFuel := math.MaxFloat64
 
 	for i := 0; i < maxPos; i++ {
 		tmpFuel := 0.0
 		for _, crab := range crabs {
-
-			diff := math.Abs(float64(crab - i))
-			tmpFuel += diff * (diff + 1) / 2
-
+			// For example 5 steps = 1+2+3+4+5 == 15 And that is 5 * (5+1) / 2
+			steps := math.Abs(float64(crab - i))
+			tmpFuel += steps * (steps + 1) / 2
 		}
 		if tmpFuel < leastAmountOfFuel {
 			leastAmountOfFuel = tmpFuel

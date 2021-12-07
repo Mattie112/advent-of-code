@@ -63,3 +63,13 @@ func StringToInt(string string) int {
 	}
 	return i
 }
+
+func GetMaxFromArr(arr []int) int {
+	max := 0
+	for _, a := range arr {
+		if a > max {
+			max = a
+		}
+	}
+	return max
+}
