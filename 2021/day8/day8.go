@@ -4,24 +4,25 @@ import (
 	"AoC/utils"
 	"fmt"
 	log "github.com/sirupsen/logrus"
+	"sort"
 	"strings"
 )
 
 func main() {
-	log.SetLevel(log.DebugLevel)
+	log.SetLevel(log.InfoLevel)
 	var count int
-	//count = part1("day8/day8-test.txt")
-	//log.Infoln(fmt.Sprintf("Part 1 Test2 Answer %d", count))
-	//count = part1("day8/day8-test2.txt")
-	//log.Infoln(fmt.Sprintf("Part 1 Test2 Answer %d", count))
-	//count = part1("day8/day8.txt")
-	//log.Infoln(fmt.Sprintf("Part 1 Answer %d", count))
+	count = part1("day8/day8-test.txt")
+	log.Infoln(fmt.Sprintf("Part 1 Test2 Answer %d", count))
+	count = part1("day8/day8-test2.txt")
+	log.Infoln(fmt.Sprintf("Part 1 Test2 Answer %d", count))
+	count = part1("day8/day8.txt")
+	log.Infoln(fmt.Sprintf("Part 1 Answer %d", count))
 	count = part2("day8/day8-test.txt")
 	log.Infoln(fmt.Sprintf("Part 2 Test Answer %d", count))
-	//count = part2("day8/day8-test2.txt")
-	//log.Infoln(fmt.Sprintf("Part 2 Test2 Answer %d", count))
-	//count = part2("day8/day8.txt")
-	//log.Infoln(fmt.Sprintf("Part 2 Answer %d", count))
+	count = part2("day8/day8-test2.txt")
+	log.Infoln(fmt.Sprintf("Part 2 Test2 Answer %d", count))
+	count = part2("day8/day8.txt")
+	log.Infoln(fmt.Sprintf("Part 2 Answer %d", count))
 }
 
 func part1(path string) int {
@@ -34,10 +35,7 @@ func part1(path string) int {
 		output := split[1]
 		log.Debugf("Signal: %s", signal)
 		log.Debugf("Output: %s", output)
-
-		//signalPatterns := strings.Split(signal, " ")
 		signalPatterns := strings.Split(output, " ")
-
 		for _, pattern := range signalPatterns {
 			length := len(pattern)
 			switch length {
@@ -60,75 +58,123 @@ func part1(path string) int {
 	return simpleDigitCount
 }
 
-type diagram struct {
-	Top         string
-	Topleft     string
-	Topright    string
-	Mid         string
-	Bottomleft  string
-	Bottomright string
-	Bottom      string
-}
-
 func part2(path string) int {
 	lines := utils.ReadLines(path)
-
-	simpleDigitCount := 0
+	answer := 0
 	for _, line := range lines {
 		split := strings.Split(line, " | ")
 		signal := split[0]
 		output := split[1]
 		log.Debugf("Signal: %s", signal)
 		log.Debugf("Output: %s", output)
-
-		//diagram := map[string]string{"top": "", "topleft": "", "topright": "", "mid": "", "bottomleft": "", "bottomright": "", "bottom": ""}
-		d := diagram{}
 		signalPatterns := strings.Split(signal, " ")
-		//signalPatterns := strings.Split(output, " ")
+		onePattern := []string{"", ""}          // This is "1"
+		fourPattern := []string{"", "", "", ""} // This is "4"
+		lPattern := make([]string, 0)           // This is "4" - "1" just draw it, and you will see
+		simpleNumberCount := 0
+		tryAgain := make([]string, 0)
+		solvedPatterns := map[string]int{}
 
+		// Partly the same as part 1, first search and find simpleNumbers
+		// Then keep looping until we have found all numbers
+	RunAgain:
 		for _, pattern := range signalPatterns {
+			// We do sort the pattern here (a, b, c, ...) to make it easier to parse in the end
 			p := strings.Split(pattern, "")
-			length := len(pattern)
-			switch length {
+			sort.Strings(p)
+			pattern = strings.Join(p, "")
+			switch len(pattern) {
 			case 2:
 				log.Debugf("%s == %d", pattern, 1)
-				simpleDigitCount++
-				d.Topright = p[0]
-				d.Bottomright = p[1]
+				onePattern = []string{p[0], p[1]}
+				simpleNumberCount++
+				solvedPatterns[pattern] = 1
 			case 3:
 				log.Debugf("%s == %d", pattern, 7)
-				simpleDigitCount++
-				d.Top = p[0]
-				d.Topright = p[1]
-				d.Bottomright = p[2]
+				simpleNumberCount++
+				solvedPatterns[pattern] = 7
 			case 4:
 				log.Debugf("%s == %d", pattern, 4)
-				simpleDigitCount++
-				d.Topleft = p[0]
-				d.Topright = p[1]
-				d.Mid = p[2]
-				d.Bottomright = p[3]
+				fourPattern = []string{p[0], p[1], p[2], p[3]}
+				simpleNumberCount++
+				solvedPatterns[pattern] = 4
 			case 7:
 				log.Debugf("%s == %d", pattern, 8)
-				simpleDigitCount++
+				simpleNumberCount++
+				solvedPatterns[pattern] = 8
+			case 5:
+				if simpleNumberCount != 4 {
+					tryAgain = append(tryAgain, pattern)
+					continue
+				}
+				// This can be 2 || 3 || 5
+				// The only other digit that utils.Contains all of 1 (and more) is 3
+				if utils.Contains(onePattern[0], p) && utils.Contains(onePattern[1], p) {
+					log.Debugf("Found number 3 I think %s", pattern)
+					solvedPatterns[pattern] = 3
+				} else if len(lPattern) > 0 && utils.Contains(lPattern[0], p) && utils.Contains(lPattern[1], p) {
+					// The number 5 has the L pattern in it
+					log.Debugf("Found number 5 I think %s", pattern)
+					solvedPatterns[pattern] = 5
+				} else {
+					// And the number 2 has nothing
+					log.Debugf("Found number 2 I think %s", pattern)
+					solvedPatterns[pattern] = 2
+				}
+			case 6:
+				if simpleNumberCount != 4 {
+					tryAgain = append(tryAgain, pattern)
+					continue
+				}
+				// This can be 6 || 9 || 0
+				if utils.Contains(fourPattern[0], p) && utils.Contains(fourPattern[1], p) && utils.Contains(fourPattern[2], p) && utils.Contains(fourPattern[3], p) {
+					// The number 9 has the 4 pattern in it
+					log.Debugf("Found number 9 I think %s", pattern)
+					solvedPatterns[pattern] = 9
+				} else if len(lPattern) > 0 && utils.Contains(lPattern[0], p) && utils.Contains(lPattern[1], p) {
+					// The number 6 has the L pattern in it
+					log.Debugf("Found number 6 I think %s", pattern)
+					solvedPatterns[pattern] = 6
+				} else {
+					// And the number 0 has nothing
+					log.Debugf("Found number 0 I think %s", pattern)
+					solvedPatterns[pattern] = 0
+				}
+			default:
+				tryAgain = append(tryAgain, pattern)
 			}
-			log.Debugf("%+v", d)
-			drawSegment(d)
+
+			// If we have 1 and 4 we can get the lPattern
+			if simpleNumberCount == 4 && onePattern[0] != "" && fourPattern[0] != "" && len(lPattern) == 0 {
+				for _, p := range fourPattern {
+					if !utils.Contains(p, onePattern) {
+						lPattern = append(lPattern, p)
+					}
+				}
+				log.Debugf("Found L pattern: %+v", lPattern)
+			}
 		}
 
-		// Now todo are 0/2/3/5/6/9
-
+		if len(solvedPatterns) != 10 {
+			signalPatterns = tryAgain
+			tryAgain = make([]string, 0)
+			goto RunAgain
+		} else {
+			// We have 10 numbers, calculate the output
+			log.Debugf("Found %d numbers", 10)
+			log.Debugf("%+v", solvedPatterns)
+			numberAsString := ""
+			for _, o := range strings.Split(output, " ") {
+				// Split the output, sort it and then join it together for an easy lookup
+				sorted := strings.Split(o, "")
+				sort.Strings(sorted)
+				o = strings.Join(sorted, "")
+				numberAsString += fmt.Sprintf("%d", solvedPatterns[o])
+			}
+			number := utils.StringToInt(numberAsString)
+			answer += number
+		}
 	}
-	return simpleDigitCount
-}
 
-func drawSegment(d diagram) {
-	//log.Debugf(" %s%s%s%s \n%s    %s\n%s    %s", d.Top, d.Top, d.Top, d.Top, d.Topleft, d.Topright, d.Topleft, d.Topright)
-	log.Debugln(fmt.Sprintf(" %s%s%s%s ", d.Top, d.Top, d.Top, d.Top))
-	log.Debugln(fmt.Sprintf("%s    %s", d.Topleft, d.Topright))
-	log.Debugln(fmt.Sprintf("%s    %s", d.Topleft, d.Topright))
-	log.Debugln(fmt.Sprintf(" %s%s%s%s ", d.Mid, d.Mid, d.Mid, d.Mid))
-	log.Debugln(fmt.Sprintf("%s    %s", d.Bottomleft, d.Bottomright))
-	log.Debugln(fmt.Sprintf("%s    %s", d.Bottomleft, d.Bottomright))
-	log.Debugln(fmt.Sprintf(" %s%s%s%s ", d.Bottom, d.Bottom, d.Bottom, d.Bottom))
+	return answer
 }
