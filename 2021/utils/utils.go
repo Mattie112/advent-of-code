@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"unicode"
 )
 
 func ReadLines(path string) []string {
@@ -81,4 +82,22 @@ func Contains(needle string, haystack []string) bool {
 		}
 	}
 	return false
+}
+
+// IsLower https://stackoverflow.com/a/59293875/2451037
+func IsLower(s string) bool {
+	for _, r := range s {
+		if !unicode.IsLower(r) && unicode.IsLetter(r) {
+			return false
+		}
+	}
+	return true
+}
+
+func CopyMap(o map[string]bool) map[string]bool {
+	c := map[string]bool{}
+	for k, v := range o {
+		c[k] = v
+	}
+	return c
 }
