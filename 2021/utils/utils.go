@@ -109,3 +109,11 @@ func CopyMapIntString(o map[int]string) map[int]string {
 	}
 	return c
 }
+
+func CopyMapStringInt(o map[string]int) map[string]int {
+	c := map[string]int{}
+	for k, v := range o {
+		c[k] = v
+	}
+	return c
+}
