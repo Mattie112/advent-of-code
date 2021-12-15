@@ -19,8 +19,6 @@ func main() {
 	count = part2("day14/day14-test.txt")
 	log.Infoln(fmt.Sprintf("Part 2 Test Answer %d", count))
 	count = part2("day14/day14.txt")
-	count--
-	// For any reason I'm not yet sure about I need to do -1 to get the answer for part 2, but not with the test input
 	log.Infoln(fmt.Sprintf("Part 2 Answer %d", count))
 }
 
@@ -82,29 +80,32 @@ func part2(path string) int {
 	// First get the current polymer (as map this time) and remove the empty line
 	polymerStr := lines[0]
 	polymersTMP := strings.Split(polymerStr, "")
-	polymers := map[string]int{}
+	polymerPairs := map[string]int{}
+	// Group polymers per pair, could have also done this in the for loop with the steps by doing +1 there
 	for i, p := range polymersTMP {
 		if i+1 > len(polymersTMP)-1 {
 			break
 		}
-		polymers[p+polymersTMP[i+1]]++
+		polymerPairs[p+polymersTMP[i+1]]++
 	}
 	lines = lines[2:]
 
 	// Get the insertions (eg {AB => C} (as it becomes ACB)
 	insertions := getInsertions(lines)
 
+	// Count per letter (single polymer, not pairs) start with adding our input
+	counter := map[string]int{}
+	for _, p := range polymersTMP {
+		counter[p]++
+	}
+
 	// Instead of keeping the entire slice in memory we only keep the count
 	// For example:
 	// ABCCC == AB=1, BC=1, CC=2
 	// Then we can loop through these counts and see comments in the loop
 	for step := 1; step <= 40; step++ {
-		newPolymers := utils.CopyMapStringInt(polymers)
-		for key, value := range polymers {
-			if value <= 0 {
-				// If we have 0 occurrences of a polymer go to the next one
-				continue
-			}
+		newPolymers := map[string]int{}
+		for key, value := range polymerPairs {
 			log.Debugf("%s - %d", key, value)
 
 			// Spit our polymer, find the insertion letter and create 2 new elements (thus duplicating one letter
@@ -114,31 +115,19 @@ func part2(path string) int {
 			newA := splitPolymer[0] + insertion
 			newB := insertion + splitPolymer[1]
 
-			// Remove original element as it no longer exists in the listed form
-			newPolymers[key] -= value
 			// Add new elements the value is the amount the original element
 			newPolymers[newA] += value
 			newPolymers[newB] += value
+
+			// key == "AB" // insertion = "C"
+			counter[insertion] += value
 		}
-		polymers = utils.CopyMapStringInt(newPolymers)
-		log.Debugf("After step %d: %+v", step, polymers)
+		polymerPairs = utils.CopyMapStringInt(newPolymers)
+		log.Debugf("After step %d: %+v", step, polymerPairs)
 	}
 
-	counter := map[string]int{}
-	// Split our XY polymers into X and Y, so we can count then properly
-	for key, value := range polymers {
-		splitKey := strings.Split(key, "")
-		counter[splitKey[0]] += value
-		counter[splitKey[1]] += value
-	}
-
-	log.Debug(3 / 2)
-	log.Debug(float64(3 / 2))
-	log.Debug(float64(3) / 2)
-
-	// I count everything twice (except the lat one) so device by 2 and round up
 	max, min := countResult(counter)
-	return int(math.Ceil(float64(max-min) / 2))
+	return max - min
 }
 
 // Function to go from XY = 123 to X = 123 & Y = 123 and then return the min and max
