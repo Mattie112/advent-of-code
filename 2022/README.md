@@ -1,0 +1,1 @@
+Another year for Go, but this time with generics!
