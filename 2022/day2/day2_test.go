@@ -11,8 +11,8 @@ func Test_day1Part1(t *testing.T) {
 		args args
 		want int
 	}{
-		{"part 1 test", args{path: "day1-test.txt"}, 24000},
-		{"part 1 answer", args{path: "day1.txt"}, 71924},
+		{"part 1 test", args{path: "day2-test.txt"}, 24000},
+		{"part 1 answer", args{path: "day2.txt"}, 71924},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -32,8 +32,8 @@ func Test_day1Part2(t *testing.T) {
 		args args
 		want int
 	}{
-		{"part 2 test", args{path: "day1-test.txt"}, 45000},
-		{"part 2 answer", args{path: "day1.txt"}, 210406},
+		{"part 2 test", args{path: "day2-test.txt"}, 45000},
+		{"part 2 answer", args{path: "day2.txt"}, 210406},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"reflect"
 	"strconv"
 )
 
@@ -46,4 +47,17 @@ func MustParseStringToInt(input string) int {
 		panic(err)
 	}
 	return i
+}
+
+type IntOrString interface {
+	~int | ~string
+}
+
+func SliceToBooleanMap[T IntOrString](input []T) map[T]bool {
+	reflect.ValueOf(input[0]).Kind()
+	m := map[T]bool{}
+	for _, i := range input {
+		m[i] = true
+	}
+	return m
 }
