@@ -6,6 +6,7 @@ import (
 	"os"
 	"reflect"
 	"strconv"
+	"strings"
 )
 
 func ReadLines(path string) []string {
@@ -42,7 +43,7 @@ func ReadLinesAsInteger(path string) []int {
 }
 
 func MustParseStringToInt(input string) int {
-	i, err := strconv.Atoi(input)
+	i, err := strconv.Atoi(strings.Trim(input, " "))
 	if err != nil {
 		panic(err)
 	}
