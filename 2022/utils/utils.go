@@ -61,3 +61,11 @@ func SliceToBooleanMap[T IntOrString](input []T) map[T]bool {
 	}
 	return m
 }
+
+func StringSliceToIntSlice(input []string) []int {
+	ints := make([]int, len(input))
+	for i, v := range input {
+		ints[i] = MustParseStringToInt(v)
+	}
+	return ints
+}
