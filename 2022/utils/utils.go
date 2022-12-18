@@ -70,3 +70,11 @@ func StringSliceToIntSlice(input []string) []int {
 	}
 	return ints
 }
+
+func CopyMap[T int | string, U any](input map[T]U) map[T]U {
+	mapCopy := make(map[T]U)
+	for k, v := range input {
+		mapCopy[k] = v
+	}
+	return mapCopy
+}
