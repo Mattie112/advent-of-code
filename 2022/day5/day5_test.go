@@ -1,6 +1,8 @@
 package main
 
-import "testing"
+import (
+	"testing"
+)
 
 func Test_day5Part1(t *testing.T) {
 	type args struct {
@@ -9,10 +11,10 @@ func Test_day5Part1(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want int
+		want any
 	}{
-		{"part 1 test", args{path: "day5-test.txt"}, 2},
-		{"part 1 answer", args{path: "day5.txt"}, 580},
+		{"part 1 test", args{path: "day5-test.txt"}, "CMZ"},
+		{"part 1 answer", args{path: "day5.txt"}, "QNNTGTPFN"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -30,10 +32,10 @@ func Test_day5Part2(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want int
+		want any
 	}{
-		{"part 2 test", args{path: "day5-test.txt"}, 4},
-		{"part 2 answer", args{path: "day5.txt"}, 895},
+		{"part 2 test", args{path: "day5-test.txt"}, "MCD"},
+		{"part 2 answer", args{path: "day5.txt"}, "GGNPJBTTR"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
