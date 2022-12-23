@@ -51,7 +51,7 @@ func MustParseStringToInt(input string) int {
 }
 
 type IntOrString interface {
-	~int | ~string
+	int | string
 }
 
 func SliceToBooleanMap[T IntOrString](input []T) map[T]bool {
