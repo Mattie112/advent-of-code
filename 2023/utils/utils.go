@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"reflect"
+	"regexp"
 	"strconv"
 	"strings"
 )
@@ -77,4 +78,14 @@ func CopyMap[T int | string, U any](input map[T]U) map[T]U {
 		mapCopy[k] = v
 	}
 	return mapCopy
+}
+
+func GetNamedRegexCaptureGroups(re *regexp.Regexp, match []string) (paramsMap map[string]string) {
+	paramsMap = make(map[string]string)
+	for i, name := range re.SubexpNames() {
+		if i > 0 && i <= len(match) {
+			paramsMap[name] = match[i]
+		}
+	}
+	return paramsMap
 }
