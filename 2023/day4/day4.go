@@ -10,19 +10,33 @@ func main() {
 	var count int
 	count = day4Part1("day4/day4-test.txt")
 	fmt.Println(fmt.Sprintf("Part 1 Test Answer %d", count))
-	//count = day4Part2("day4/day4-test.txt")
-	//fmt.Println(fmt.Sprintf("Part 2 Test Answer %d", count))
+	count = day4Part2("day4/day4-test.txt")
+	fmt.Println(fmt.Sprintf("Part 2 Test Answer %d", count))
 	count = day4Part1("day4/day4.txt")
 	fmt.Println(fmt.Sprintf("Part 1 Answer %d", count))
-	//count = day4Part2("day4/day4.txt")
-	//fmt.Println(fmt.Sprintf("Part 2 Answer %d", count))
+	count = day4Part2("day4/day4.txt")
+	fmt.Println(fmt.Sprintf("Part 2 Answer %d", count))
 }
 
+// Normally I keep my part1 and part2 separate, but this one is so similar that I just combined them
 func day4Part1(path string) int {
-	lines := utils.ReadLines(path)
-	answer := 0
+	part1, _ := both(path)
+	return part1
+}
 
-	for _, line := range lines {
+func day4Part2(path string) int {
+	_, part2 := both(path)
+	return part2
+}
+
+func both(path string) (int, int) {
+	lines := utils.ReadLines(path)
+	part1 := 0
+	part2 := 0
+
+	cardsIHave := make([]int, len(lines)+1)
+
+	for i, line := range lines {
 		line = line[strings.Index(line, ": ")+2:]
 
 		winningStr := strings.Split(line, " | ")[0]
@@ -30,26 +44,36 @@ func day4Part1(path string) int {
 		numbersStr := strings.Split(line, " | ")[1]
 		numbers := strings.Split(numbersStr, " ")
 
-		linePoints := 0
+		i = i + 1 // Just to make it more readable (with the AoC input)
+
+		winningNumberPoints := 0 // Part 1
+
+		cardsIHave[i]++ // Part 2: We always have the card itself
+		winningId := i  // Part 2: Our current card (we will win the next x cards)
+
 		for _, number := range numbers {
+			// First check the winning numbers
 			for _, win := range winning {
 				if number == win && number != "" && win != "" {
-					if linePoints == 0 {
-						linePoints = 1
+					// For part 1 add the points
+					if winningNumberPoints == 0 {
+						winningNumberPoints = 1
 					} else {
-						linePoints *= 2
+						winningNumberPoints *= 2
 					}
+					// Part 2 add the cards based on the amound we already have
+					winningId++
+					cardsIHave[winningId] += cardsIHave[i]
 				}
 			}
 		}
-		answer += linePoints
+		part1 += winningNumberPoints
 	}
 
-	return answer
-}
+	// Count part 2
+	for _, amount := range cardsIHave {
+		part2 += amount
+	}
 
-func day4Part2(path string) int {
-	answer := 0
-
-	return answer
+	return part1, part2
 }
