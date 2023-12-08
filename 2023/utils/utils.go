@@ -89,3 +89,11 @@ func GetNamedRegexCaptureGroups(re *regexp.Regexp, match []string) (paramsMap ma
 	}
 	return paramsMap
 }
+
+func CountChars(input string) map[string]int {
+	counts := make(map[string]int)
+	for _, char := range input {
+		counts[string(char)]++
+	}
+	return counts
+}
