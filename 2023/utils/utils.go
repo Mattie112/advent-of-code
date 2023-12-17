@@ -97,3 +97,18 @@ func CountChars(input string) map[string]int {
 	}
 	return counts
 }
+
+func MakeGrid(path string) [][]string {
+	grid := make([][]string, 0)
+
+	// First make a grid of the input
+	lines := ReadLines(path)
+	for _, line := range lines {
+		var row []string
+		for _, char := range line {
+			row = append(row, string(char))
+		}
+		grid = append(grid, row)
+	}
+	return grid
+}
