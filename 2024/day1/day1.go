@@ -9,15 +9,10 @@ import (
 )
 
 func main() {
-	var count int
-	count = day1Part1("day1/day1-test.txt")
-	fmt.Println(fmt.Sprintf("Part 1 Test Answer %d", count))
-	count = day1Part2("day1/day1-test.txt")
-	fmt.Println(fmt.Sprintf("Part 2 Test Answer %d", count))
-	count = day1Part1("day1/day1.txt")
-	fmt.Println(fmt.Sprintf("Part 1 Answer %d", count))
-	count = day1Part2("day1/day1.txt")
-	fmt.Println(fmt.Sprintf("Part 2 Answer %d", count))
+	fmt.Println(fmt.Sprintf("Part 1 Test Answer %d", day1Part1("day1/day1-test.txt")))
+	fmt.Println(fmt.Sprintf("Part 2 Test Answer %d", day1Part2("day1/day1-test.txt")))
+	fmt.Println(fmt.Sprintf("Part 1 Answer %d", day1Part1("day1/day1.txt")))
+	fmt.Println(fmt.Sprintf("Part 2 Answer %d", day1Part2("day1/day1.txt")))
 }
 
 func day1Part1(path string) int {
