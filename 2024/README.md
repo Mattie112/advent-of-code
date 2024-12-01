@@ -1,0 +1,1 @@
+2024 solutions for Advent of Code in Golang!
