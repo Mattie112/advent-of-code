@@ -1,23 +1,21 @@
 # advent-of-code
 
-2021 Is in Golang, please ignore all PHP related stuff, todo clean up this repo so it is more clear on what to use for what year!
+I decided to put all of my AoC solutions into one repo. I use different programming languages for different years.
+I will do as many assignments as I can, but it has to stay fun :) So usually I don't finish the entire month.
 
-My repo for AoC, this one replaces the following:
+PHP:
 
-- https://github.com/Mattie112/advent-of-code-2017
-- https://github.com/Mattie112/advent-of-code-2018
-- https://github.com/Mattie112/advent-of-code-2019
+- https://github.com/Mattie112/advent-of-code/tree/main/2017
+- https://github.com/Mattie112/advent-of-code/tree/main/2018
+- https://github.com/Mattie112/advent-of-code/tree/main/2019
+- https://github.com/Mattie112/advent-of-code/tree/main/2020
 
-All new years will be added to this repo and can be run by using the `cli.php` file
+Golang:
 
-Windows users need to add a .env file with:
-```
-XDEBUG_CONFIG="client_host=192.168.100.10"
-PHP_IDE_CONFIG="serverName=AOC"
-```
+- https://github.com/Mattie112/advent-of-code/tree/main/2021
+- https://github.com/Mattie112/advent-of-code/tree/main/2022
+- https://github.com/Mattie112/advent-of-code/tree/main/2023
+- https://github.com/Mattie112/advent-of-code/tree/main/2024
 
-Linux users can use (docker internal ip for the host):
-```
-XDEBUG_CONFIG="client_host=172.17.0.1"
-PHP_IDE_CONFIG="serverName=AOC"
-```
+Any custom run instructions will be in the README of the year. I will not maintain / update older years to keep them
+running.

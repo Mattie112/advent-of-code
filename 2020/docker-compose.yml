@@ -2,8 +2,8 @@ version: '3.5'
 services:
   php8:
     build:
-      context: ./
-      dockerfile: ./Dockerfile
+      context: ..
+      dockerfile: Dockerfile
     volumes:
       - ./:/opt/project
     env_file:
