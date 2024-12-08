@@ -10,9 +10,9 @@ import (
 
 func main() {
 	log.SetLevel(log.InfoLevel)
-	//fmt.Println(fmt.Sprintf("Part 1 Test Answer %d", Part1("day6/day6-test.txt")))
+	fmt.Println(fmt.Sprintf("Part 1 Test Answer %d", Part1("day6/day6-test.txt")))
 	fmt.Println(fmt.Sprintf("Part 2 Test Answer %d", Part2("day6/day6-test.txt")))
-	//fmt.Println(fmt.Sprintf("Part 1 Answer %d", Part1("day6/day6.txt")))
+	fmt.Println(fmt.Sprintf("Part 1 Answer %d", Part1("day6/day6.txt")))
 	fmt.Println(fmt.Sprintf("Part 2 Answer %d", Part2("day6/day6.txt")))
 }
 
@@ -93,17 +93,9 @@ func getVisited(grid [][]cell, guardPos cell) map[string]bool {
 		}
 		grid[guardPos.yPos][guardPos.xPos].letter = guardPos.letter
 
-		//if log.GetLevel() == log.DebugLevel {
-		//	for _, row := range grid {
-		//		for _, c := range row {
-		//			fmt.Print(c.letter)
-		//		}
-		//		fmt.Println()
-		//	}
-		//	fmt.Println("\n\n\n")
-		//}
-
+		printGrid(grid)
 	}
+
 	return visited
 }
 
@@ -124,15 +116,12 @@ func Part2(path string) int {
 		}
 	}
 
+	// For each loop we need to remember the original grid and the visited cells
 	var originalGrid [][]cell
 	originalGrid = copyGrid(grid)
-
 	part1Visited := getVisited(grid, guardPos)
 	part1Count := 0
-	fmt.Printf("Part 1 visited %d\n", len(part1Visited))
-	//part1Visited = make(map[string]bool)
-	//part1Visited["3,6"] = true
-	//part1Visited["6,7"] = true
+	log.Debugf("Part 1 visited %d\n", len(part1Visited))
 	originalGuardPos := guardPos
 
 	validObstructionPlaces := 0
@@ -140,7 +129,7 @@ func Part2(path string) int {
 	// Loop through all the cells that we visited in part 1
 	// these are the only places wher placing an obstruction will have any effect
 	for k, _ := range part1Visited {
-		//fmt.Printf("Counter  %d/%d\n", part1Count, len(part1Visited))
+		log.Debugf("Counter  %d/%d\n", part1Count, len(part1Visited))
 		visited := make(map[string]string)
 
 		grid = copyGrid(originalGrid)
@@ -149,6 +138,7 @@ func Part2(path string) int {
 		x, _ := strconv.Atoi(coords[0])
 		y, _ := strconv.Atoi(coords[1])
 
+		// Skip the guard pos itself
 		if y == originalGuardPos.yPos && x == originalGuardPos.xPos {
 			continue
 		}
@@ -156,39 +146,20 @@ func Part2(path string) int {
 		originalLetter := grid[y][x].letter
 		grid[y][x].letter = OBSTACLE
 		log.Debugf("Testing %d, %d", y, x)
-		//fmt.Printf("Testing %d, %d\n", y, x)
 		printGrid(grid)
-		firstStep := true
 		guardPos = originalGuardPos
-		visited[fmt.Sprintf("%d,%d", guardPos.xPos, guardPos.yPos)] = guardPos.letter
-		loops := 0
+		visited[fmt.Sprintf("%d,%d, %s", guardPos.xPos, guardPos.yPos, guardPos.letter)] = guardPos.letter
 
 		for guardPos.yPos > 0 && guardPos.yPos < len(grid) && guardPos.xPos > 0 && guardPos.xPos < len(grid[0]) {
-			loops++
-			if !firstStep && guardPos.yPos == originalGuardPos.yPos && guardPos.xPos == originalGuardPos.xPos && guardPos.letter == originalGuardPos.letter {
-				log.Debugf("Endless loop found %d, %d", y+1, x+1)
+			// If we visited this cell AND we are in the same direction we are done
+			if _, ok := visited[fmt.Sprintf("%d,%d,%s", guardPos.xPos, guardPos.yPos, guardPos.letter)]; ok {
+				log.Debugf("Endless loop found %d, %d", y, x)
 				validObstructionPlaces++
-				// WE ARE DONE!
-				break
-			}
-			if loops > 10000 {
-				fmt.Println("Endless loop based on numbers")
-				validObstructionPlaces++
-				break
-			}
-			if _, ok := visited[fmt.Sprintf("%d,%d", guardPos.xPos, guardPos.yPos)]; ok {
-				if !firstStep && visited[fmt.Sprintf("%d,%d", guardPos.xPos, guardPos.yPos)] == guardPos.letter {
-					log.Debugf("Endless loop found %d, %d", y+1, x+1)
-					validObstructionPlaces++
-					// WE ARE DONE!
-					break
-				}
 			}
 
-			firstStep = false
 			grid[guardPos.yPos][guardPos.xPos].letter = "X"
 
-			visited[fmt.Sprintf("%d,%d", guardPos.xPos, guardPos.yPos)] = guardPos.letter
+			visited[fmt.Sprintf("%d,%d,%s", guardPos.xPos, guardPos.yPos, guardPos.letter)] = guardPos.letter
 
 			switch guardPos.letter {
 			case UP:
@@ -217,15 +188,8 @@ func Part2(path string) int {
 				}
 			}
 
-			//if guardPos.yPos < 0 || guardPos.yPos > len(grid)-1 || guardPos.xPos < 0 || guardPos.xPos > len(grid[0])-1 {
-			//	continue
-			//}
-
 			printGrid(grid)
 		}
-
-		// The guard walked out of bounds, not a valid position
-		//validObstructionPlaces++
 
 		grid[y][x].letter = originalLetter
 		part1Count++
