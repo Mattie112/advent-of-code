@@ -6,15 +6,21 @@ import (
 	log "github.com/sirupsen/logrus"
 	"strconv"
 	"strings"
+	"time"
 )
 
 func main() {
-	log.SetLevel(log.DebugLevel)
-	fmt.Println(fmt.Sprintf("Part 1 Test Answer %d", Part1("day9/day9-test.txt")))
-	fmt.Println(fmt.Sprintf("Part 1 Test Answer %d", Part1("day9/day9-test2.txt")))
-	//fmt.Println(fmt.Sprintf("Part 2 Test Answer %d", Part2("day9/day9-test.txt")))
-	//fmt.Println(fmt.Sprintf("Part 1 Answer %d", Part1("day9/day9.txt")))
-	//fmt.Println(fmt.Sprintf("Part 2 Answer %d", Part2("day9/day9.txt")))
+	log.SetLevel(log.InfoLevel)
+	start := time.Now()
+	fmt.Println(fmt.Sprintf("Part 1 Test Answer %d, took %s", Part1("day9/day9-test.txt"), time.Since(start).String()))
+	start = time.Now()
+	fmt.Println(fmt.Sprintf("Part 1 Test Answer %d, took %s", Part1("day9/day9-test2.txt"), time.Since(start).String()))
+	start = time.Now()
+	fmt.Println(fmt.Sprintf("Part 2 Test Answer %d, took %s", Part2("day9/day9-test.txt"), time.Since(start).String()))
+	start = time.Now()
+	fmt.Println(fmt.Sprintf("Part 1 Answer %d, took %s", Part1("day9/day9.txt"), time.Since(start).String()))
+	start = time.Now()
+	fmt.Println(fmt.Sprintf("Part 2 Answer %d, took %s", Part2("day9/day9.txt"), time.Since(start).String()))
 }
 
 func Part1(path string) int {
@@ -37,7 +43,9 @@ func Part1(path string) int {
 		}
 	}
 
-	log.Debugf("Visual: %s", strings.Join(visual, ""))
+	if log.GetLevel() == log.DebugLevel {
+		log.Debugf("Visual: %s", strings.Join(visual, ""))
+	}
 
 	// Now defragment this 'disk' (we use the visual representation to make it easier)
 	lastPos := len(visual) - 1
@@ -50,25 +58,34 @@ OUTER:
 				for visual[j] != "." && j > i {
 					// Now grab the last element and put it here
 					visual[i] = visual[j]
-					visual[j] = "."
+
+					// Remove the element we just moved (we don't really care about these)
+					visual = append(visual[:j])
+
 					lastPos = j - 1
-					log.Debugf("Visual after step %d: %s", i, strings.Join(visual, ""))
+					if log.GetLevel() == log.DebugLevel {
+						// Leaving this as-is with the log level set to info has a runtime of 1m15s for part1
+						// with this one extra IF it is 31ms
+						log.Debugf("Visual after step %d: %s", i, strings.Join(visual, ""))
+					}
 					continue OUTER
 				}
 			}
 		}
 	}
 
-	log.Debugf("Visual after sorting: %s", strings.Join(visual, ""))
+	if log.GetLevel() == log.DebugLevel {
+		log.Debugf("Visual after sorting: %s", strings.Join(visual, ""))
+	}
 
-	// Calculate the checksum
-
+	// Calculate the checksum (we could do this in one go in the loop above but this is easier to read)
 	for i := 0; i < len(visual); i++ {
 		if visual[i] == "." {
 			break
 		}
 		answer += i * utils.MustParseStringToInt(visual[i])
 	}
+
 	return answer
 }
 
