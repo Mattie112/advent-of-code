@@ -9,19 +9,19 @@ import (
 )
 
 func main() {
-	log.SetLevel(log.DebugLevel)
+	log.SetLevel(log.InfoLevel)
 	start := time.Now()
-	fmt.Println(fmt.Sprintf("Part 1 Test Answer %d, took %s", Part1("day12/day12-test.txt"), time.Since(start).String()))
-	//start = time.Now()
-	//fmt.Println(fmt.Sprintf("Part 1 Test Answer %d, took %s", Part1("day12/day12-test2.txt"), time.Since(start).String()))
-	//start = time.Now()
-	//fmt.Println(fmt.Sprintf("Part 1 Test Answer %d, took %s", Part1("day12/day12-test3.txt"), time.Since(start).String()))
-	//start = time.Now()
-	//fmt.Println(fmt.Sprintf("Part 2 Test Answer %d, took %s", Part2("day12/day12-test.txt"), time.Since(start).String()))
-	//start = time.Now()
-	//fmt.Println(fmt.Sprintf("Part 1 Answer %d, took %s", Part1("day12/day12.txt"), time.Since(start).String()))
-	//start = time.Now()
-	//fmt.Println(fmt.Sprintf("Part 2 Answer %d, took %s", Part2("day12/day12.txt"), time.Since(start).String()))
+	fmt.Println(fmt.Sprintf("Part 1 Test Answer %d, took %s", Part1("day12/day12-test1.txt"), time.Since(start).String()))
+	start = time.Now()
+	fmt.Println(fmt.Sprintf("Part 1 Test Answer %d, took %s", Part1("day12/day12-test2.txt"), time.Since(start).String()))
+	start = time.Now()
+	fmt.Println(fmt.Sprintf("Part 1 Test Answer %d, took %s", Part1("day12/day12-test3.txt"), time.Since(start).String()))
+	start = time.Now()
+	fmt.Println(fmt.Sprintf("Part 2 Test Answer %d, took %s", Part2("day12/day12-test1.txt"), time.Since(start).String()))
+	start = time.Now()
+	fmt.Println(fmt.Sprintf("Part 1 Answer %d, took %s", Part1("day12/day12.txt"), time.Since(start).String()))
+	start = time.Now()
+	fmt.Println(fmt.Sprintf("Part 2 Answer %d, took %s", Part2("day12/day12.txt"), time.Since(start).String()))
 }
 
 type point struct {
