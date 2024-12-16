@@ -69,8 +69,8 @@ func Part1(path string, width int, height int, seconds int) int {
 	}
 
 	// Now move the robots
-	for i := 1; i <= 100; i++ {
-		for k, _ := range robotOrder {
+	for i := 1; i <= seconds; i++ {
+		for k := range robotOrder {
 			r := &robots[k]
 			newXPos := (r.position.x + r.velocity.x) % width
 			newYPos := (r.position.y + r.velocity.y) % height
@@ -179,8 +179,8 @@ func Part2(path string, width int, height int, seconds int) int {
 	}
 
 	// Now move the robots
-	for i := 1; i <= 99999; i++ {
-		for k, _ := range robotOrder {
+	for i := 1; i <= 99999+seconds; i++ {
+		for k := range robotOrder {
 			r := &robots[k]
 			newXPos := (r.position.x + r.velocity.x) % width
 			newYPos := (r.position.y + r.velocity.y) % height
