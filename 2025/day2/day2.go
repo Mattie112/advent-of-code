@@ -7,9 +7,9 @@ import (
 )
 
 func main() {
-	//fmt.Println(fmt.Sprintf("Part 1 Test Answer %d", day2Part1("day2/day2-test.txt")))
-	//fmt.Println(fmt.Sprintf("Part 1 Answer %d", day2Part1("day2/day2.txt")))
-	//fmt.Println(fmt.Sprintf("Part 2 Test Answer %d", day2Part2("day2/day2-test.txt")))
+	fmt.Println(fmt.Sprintf("Part 1 Test Answer %d", day2Part1("day2/day2-test.txt")))
+	fmt.Println(fmt.Sprintf("Part 1 Answer %d", day2Part1("day2/day2.txt")))
+	fmt.Println(fmt.Sprintf("Part 2 Test Answer %d", day2Part2("day2/day2-test.txt")))
 	fmt.Println(fmt.Sprintf("Part 2 Answer %d", day2Part2("day2/day2.txt")))
 }
 
